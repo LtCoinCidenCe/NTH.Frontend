@@ -1,13 +1,24 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../components/welcome/welcome";
+import { redirect } from "react-router";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Home page" },
+    { name: "description", content: "This is the home page." },
   ];
 }
 
-export default function Home() {
+export async function clientLoader() {
+  let NTHUsername = localStorage.getItem("NTHUsername");
+  let NTHPassword = localStorage.getItem("NTHPassword");
+  if (NTHUsername === null || NTHPassword === null) {
+    return redirect("login");
+  }
+  return { message: "Hello, world!" };
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  console.log(loaderData);
   return <Welcome />;
 }
