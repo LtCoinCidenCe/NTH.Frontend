@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { Form } from "react-router";
 
 const LoginForm = () => {
-  const [NTHUsername, setNTHUsername] = useState("");
-  const [NTHPassword, setNTHPassword] = useState("");
-  const OnButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(`username: ${NTHUsername}\npassword: ${NTHPassword}`);
-    localStorage.setItem("NTHUsername", NTHUsername);
-    localStorage.setItem("NTHPassword", NTHPassword);
-  }
+  // const [NTHUsername, setNTHUsername] = useState("");
+  // const [NTHPassword, setNTHPassword] = useState("");
+  // const OnButtonClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   const UserLoginDTO = { "username": NTHUsername, "password": NTHPassword };
+  //   const fetched = await fetch("http://localhost:5139/api/Login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(UserLoginDTO) });
+  //   const token = await fetched.text();
+  //   if (fetched.status !== 200) {
+  //     console.error(token)
+  //     return;
+  //   }
+  //   localStorage.setItem("NTHUsername", NTHUsername);
+  //   localStorage.setItem("NTHPassword", NTHPassword);
+  //   localStorage.setItem("appjwt", token);
+  //   console.log(`username: ${NTHUsername}\npassword: ${NTHPassword}`);
+  // }
   return (
     // 全屏居中容器：垂直+水平居中，最小高度占满屏幕
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
       {/* 表单卡片：白色背景、阴影、圆角、响应式宽度 */}
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 space-y-6">
+
+      <Form method="POST" navigate={false}
+        className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 space-y-6">
         {/* 标题：居中、加粗、渐变色文字 */}
         <h1 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
           super翻译
@@ -26,12 +36,12 @@ const LoginForm = () => {
             </svg>
           </span>
           <input
-            id="login-username" // 指定用户名输入框ID
+            name="username" // 指定用户名输入框ID
             type="text"
             placeholder="请输入用户名"
             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
-            value={NTHUsername}
-            onChange={(event) => { setNTHUsername(event.target.value) }}
+          // value={NTHUsername}
+          // onChange={(event) => { setNTHUsername(event.target.value) }}
           />
         </div>
 
@@ -43,23 +53,25 @@ const LoginForm = () => {
             </svg>
           </span>
           <input
-            id="login-password" // 指定密码输入框ID
+            name="password" // 指定密码输入框ID
             type="password"
             placeholder="请输入密码"
             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
-            value={NTHPassword}
-            onChange={(event) => { setNTHPassword(event.target.value) }}
+          // value={NTHPassword}
+          // onChange={(event) => { setNTHPassword(event.target.value) }}
           />
         </div>
 
         {/* 登录按钮：全屏宽度、渐变背景、悬停效果 */}
         <button
           className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-all shadow-md hover:shadow-lg"
-          onClick={OnButtonClick}
+          type="submit"
+        // onClick={OnButtonClick}
         >
           登录
         </button>
-      </div>
+
+      </Form>
     </div>
   );
 };
