@@ -4,7 +4,7 @@ import LoginForm from "~/components/loginForm/loginForm";
 import { globalContext } from "./GlobalLayout";
 
 export async function clientLoader({ context }: Route.ClientLoaderArgs) {
-  console.log("login loader get globalContext", context.get(globalContext));
+  const globalContextValue = context.get(globalContext);
   return { message: "Login clientLoader" };
 }
 
