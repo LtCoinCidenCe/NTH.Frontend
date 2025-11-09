@@ -15,11 +15,11 @@ export async function clientLoader() {
   if (NTHUsername === null || NTHPassword === null) {
     return redirect("login");
   }
+  console.debug("home clientLoader");
   return { message: "Hello, world!" };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData);
   return (
     <div>
       <title>Home page</title>

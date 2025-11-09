@@ -9,10 +9,10 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export async function clientLoader() {
+  console.debug("annoying clientLoader");
   return { message: "Hello, annoying!" };
 }
 
 export default function Annoying({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData);
   return <LoginForm />;
 }

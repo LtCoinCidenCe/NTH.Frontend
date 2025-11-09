@@ -1,10 +1,9 @@
 import { redirect } from "react-router";
 import type { Route } from "./+types/login";
 import LoginForm from "~/components/loginForm/loginForm";
-import { globalContext } from "./GlobalLayout";
 
 export async function clientLoader({ context }: Route.ClientLoaderArgs) {
-  const globalContextValue = context.get(globalContext);
+  console.debug("login clientLoader");
   return { message: "Login clientLoader" };
 }
 
