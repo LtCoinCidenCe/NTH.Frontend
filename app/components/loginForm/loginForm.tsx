@@ -1,28 +1,46 @@
-import { Form } from "react-router";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { ErrorContext } from "../ErrorToastProvider";
 
 const LoginForm = () => {
-  // const [NTHUsername, setNTHUsername] = useState("");
-  // const [NTHPassword, setNTHPassword] = useState("");
-  // const OnButtonClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   const UserLoginDTO = { "username": NTHUsername, "password": NTHPassword };
-  //   const fetched = await fetch("http://localhost:5139/api/Login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(UserLoginDTO) });
-  //   const token = await fetched.text();
-  //   if (fetched.status !== 200) {
-  //     console.error(token)
-  //     return;
-  //   }
-  //   localStorage.setItem("NTHUsername", NTHUsername);
-  //   localStorage.setItem("NTHPassword", NTHPassword);
-  //   localStorage.setItem("appjwt", token);
-  //   console.log(`username: ${NTHUsername}\npassword: ${NTHPassword}`);
-  // }
+  const [NTHUsername, setNTHUsername] = useState("");
+  const [NTHPassword, setNTHPassword] = useState("");
+  const navigator = useNavigate();
+  const errorContext = useContext(ErrorContext);
+  const onLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!(NTHUsername.length > 2 && NTHPassword.length > 5)) {
+      errorContext("用户名太短或密码太短");
+      return;
+    }
+    const userLoginDTO = { Username: NTHUsername, Password: NTHPassword };
+    try {
+      const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(userLoginDTO) });
+      const token = await fetched.text();
+      if (fetched.status >= 500) {
+        errorContext("server error");
+        return;
+      }
+      if (fetched.status !== 200) {
+        errorContext("用户名或密码不正确");
+        return;
+      }
+      localStorage.setItem("NTHUsername", NTHUsername);
+      localStorage.setItem("NTHPassword", NTHPassword);
+      localStorage.setItem("appjwt", token);
+      navigator("/", { replace: true });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     // 全屏居中容器：垂直+水平居中，最小高度占满屏幕
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
       {/* 表单卡片：白色背景、阴影、圆角、响应式宽度 */}
 
-      <Form method="POST" navigate={false}
-        className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 space-y-6">
+      <form method="POST" className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 space-y-6"
+        onSubmit={onLoginSubmit}>
         {/* 标题：居中、加粗、渐变色文字 */}
         <h1 className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
           super翻译
@@ -40,8 +58,8 @@ const LoginForm = () => {
             type="text"
             placeholder="请输入用户名"
             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
-          // value={NTHUsername}
-          // onChange={(event) => { setNTHUsername(event.target.value) }}
+            value={NTHUsername}
+            onChange={(event) => { setNTHUsername(event.target.value) }}
           />
         </div>
 
@@ -57,8 +75,8 @@ const LoginForm = () => {
             type="password"
             placeholder="请输入密码"
             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
-          // value={NTHPassword}
-          // onChange={(event) => { setNTHPassword(event.target.value) }}
+            value={NTHPassword}
+            onChange={(event) => { setNTHPassword(event.target.value) }}
           />
         </div>
 
@@ -71,7 +89,7 @@ const LoginForm = () => {
           登录
         </button>
 
-      </Form>
+      </form>
     </div>
   );
 };

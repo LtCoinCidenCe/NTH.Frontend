@@ -1,7 +1,9 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../components/welcome/welcome";
 import { redirect } from "react-router";
+import { isJWTPayload } from "~/types";
 
+// replaced by <title> & <meta>
 // export function meta({ }: Route.MetaArgs) {
 //   return [
 //     { title: "Home page" },
@@ -12,7 +14,17 @@ import { redirect } from "react-router";
 export async function clientLoader() {
   let NTHUsername = localStorage.getItem("NTHUsername");
   let NTHPassword = localStorage.getItem("NTHPassword");
-  if (NTHUsername === null || NTHPassword === null) {
+  let appjwt = localStorage.getItem("appjwt");
+  if (NTHUsername === null || NTHPassword === null || appjwt === null) {
+    return redirect("login");
+  }
+  try {
+    const payloadText = atob(appjwt.split(".")[1]);
+    const payload = JSON.parse(payloadText);
+    if (isJWTPayload(payload)) {
+      const { exp, iss, aud } = payload;
+    }
+  } catch (error) {
     return redirect("login");
   }
   console.debug("home clientLoader");

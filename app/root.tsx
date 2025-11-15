@@ -1,4 +1,5 @@
 import {
+  createContext,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -42,7 +43,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export function HydrateFallback() {
-  return <p>Loading Game...</p>;
+  return <p style={{color:"#cccccc"}}>Loading Game...</p>;
+}
+
+export const rootContext = createContext<string | null>("hei");
+
+export async function clientLoader() {
+  console.log("root loader");
 }
 
 export function clientLoader() {
