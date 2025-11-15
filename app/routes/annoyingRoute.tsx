@@ -1,5 +1,5 @@
 import LoginForm from "~/components/loginForm/loginForm";
-import type { Route } from "./+types/annoying";
+import type { Route } from "./+types/annoyingRoute";
 
 export function meta({ }: Route.MetaArgs) {
   return [

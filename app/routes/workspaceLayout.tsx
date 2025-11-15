@@ -1,17 +1,8 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../components/welcome/welcome";
-import { redirect } from "react-router";
+import { Outlet, redirect } from "react-router";
+import type { Route } from "./+types/workspaceLayout";
 import { isJWTPayload } from "~/types";
 
-// replaced by <title> & <meta>
-// export function meta({ }: Route.MetaArgs) {
-//   return [
-//     { title: "Home page" },
-//     { name: "description", content: "This is the home page." },
-//   ];
-// }
-
-export async function clientLoader() {
+export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
   let NTHPassword = localStorage.getItem("NTHPassword");
   let appjwt = localStorage.getItem("appjwt");
@@ -32,15 +23,10 @@ export async function clientLoader() {
   } catch (error) {
     return redirect("login");
   }
-  console.debug("home clientLoader");
+  console.debug("workspaceLayout ClientLoader");
   return { message: "Hello, world!" };
-}
+};
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  return (
-    <div>
-      <title>Home page</title>
-      <meta name="description" content="This is the home page." />
-      <Welcome />
-    </div>);
+export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
+  return <Outlet />
 }

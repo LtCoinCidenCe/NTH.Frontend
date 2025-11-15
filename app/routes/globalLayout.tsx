@@ -5,7 +5,7 @@ export async function clientLoader() {
   console.debug("GlobalLayout ClientLoader");
 };
 
-export default function GlobalLayout() {
+export default function globalLayout() {
   return (
     <ErrorToastProvider>
       <Outlet />

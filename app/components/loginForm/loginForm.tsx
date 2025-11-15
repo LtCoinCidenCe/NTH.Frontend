@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { ErrorContext } from "../ErrorToastProvider";
 
-const LoginForm = () => {
-  const [NTHUsername, setNTHUsername] = useState("");
-  const [NTHPassword, setNTHPassword] = useState("");
+const LoginForm: React.FC<{ username: string, password: string }> = ({ username, password }) => {
+  const [NTHUsername, setNTHUsername] = useState(username);
+  const [NTHPassword, setNTHPassword] = useState(password);
   const [hidePassword, setHidePassword] = useState("password");
   const navigator = useNavigate();
   const errorContext = useContext(ErrorContext);
