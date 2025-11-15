@@ -21,9 +21,14 @@ export async function clientLoader() {
   try {
     const payloadText = atob(appjwt.split(".")[1]);
     const payload = JSON.parse(payloadText);
-    if (isJWTPayload(payload)) {
-      const { exp, iss, aud } = payload;
+    if (!isJWTPayload(payload)) {
+      return redirect("login")
     }
+    const { exp, iss, aud } = payload;
+    // jwt exp is second, but JavaScript Date is millisecond
+    let expireTime = new Date(exp * 1000);
+    console.debug(payload);
+    console.debug("expire time:", expireTime);
   } catch (error) {
     return redirect("login");
   }

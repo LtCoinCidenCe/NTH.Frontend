@@ -2,8 +2,6 @@ import React, { useState, useEffect, createContext } from 'react';
 
 export const ErrorContext = createContext((message: string) => { });
 
-
-
 // 错误提示组件（全局唯一，通过状态控制显示）
 const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => void }> = ({ message, isShow, onClose }) => {
   // 定时消失：默认5秒后关闭
@@ -60,7 +58,7 @@ const ErrorToastProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const closeErrorToast = () => {
-    setErrorState({ isShow: false, message: '' });
+    setErrorState({ isShow: false, message: errorState.message });
   };
 
   return (

@@ -5,6 +5,7 @@ import { ErrorContext } from "../ErrorToastProvider";
 const LoginForm = () => {
   const [NTHUsername, setNTHUsername] = useState("");
   const [NTHPassword, setNTHPassword] = useState("");
+  const [hidePassword, setHidePassword] = useState("password");
   const navigator = useNavigate();
   const errorContext = useContext(ErrorContext);
   const onLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -72,12 +73,35 @@ const LoginForm = () => {
           </span>
           <input
             name="password" // 指定密码输入框ID
-            type="password"
+            type={hidePassword}
             placeholder="请输入密码"
             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
             value={NTHPassword}
             onChange={(event) => { setNTHPassword(event.target.value) }}
           />
+
+          {/* 右侧显示/隐藏切换按钮（绝对定位，不影响输入框布局） */}
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            onClick={() => setHidePassword(prev => prev === "password" ? "text" : "password")}
+            aria-label={hidePassword === "password" ? "显示密码" : "隐藏密码"}
+          >
+            {/* 根据状态切换图标：闭眼（隐藏）/睁眼（显示） */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* 显示密码：睁眼图标 */}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+              {
+                hidePassword === "text" ? null : (
+                  // 隐藏密码：图标斜杠
+                  <line x1="0" y1="0" x2="24" y2="24" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+                )
+              }
+            </svg>
+          </button>
         </div>
 
         {/* 登录按钮：全屏宽度、渐变背景、悬停效果 */}
