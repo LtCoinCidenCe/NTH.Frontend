@@ -1,18 +1,13 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const WorkspaceHeader: React.FC = () => {
-  const location = useLocation(); // 获取当前路由，用于高亮活跃导航
-
   // 左侧导航菜单配置
   const leftMenus = [
     { label: '主页', path: '/' },
     { label: '用户', path: '/user' },
     { label: '作者', path: '/author' },
   ];
-
-  // 判断当前路由是否匹配，用于高亮样式
-  const isActive = (path: string) => location.pathname === path;
 
   return (
     // 顶部固定导航栏，z-50 确保在页面最上层
@@ -23,16 +18,18 @@ const WorkspaceHeader: React.FC = () => {
           {/* 左侧导航菜单 */}
           <nav className="flex items-center space-x-6">
             {leftMenus.map((menu) => (
-              <Link
+              <NavLink
                 key={menu.path}
                 to={menu.path}
-                className={`text-xl font-medium transition-colors hover:text-blue-500 dark:hover:text-blue-400 ${isActive(menu.path)
-                  ? 'text-blue-500 dark:text-blue-400' // 活跃路由高亮色
-                  : 'text-gray-700 dark:text-gray-300' // 普通状态色
-                  }`}
+                className={({ isActive, isPending }) => (
+                  isActive ? "text-blue-500 dark:text-blue-400" : // 活跃路由高亮色
+                    isPending ? "text-gray-700 dark:text-gray-300" : "" // 普通状态色
+                )}
               >
-                {menu.label}
-              </Link>
+                <div className='text-xl font-medium transition-colors hover:text-blue-500 dark:hover:text-blue-400'>
+                  {menu.label}
+                </div>
+              </NavLink>
             ))}
           </nav>
 
