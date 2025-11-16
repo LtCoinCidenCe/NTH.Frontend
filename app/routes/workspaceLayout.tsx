@@ -1,6 +1,7 @@
 import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/workspaceLayout";
 import { isJWTPayload } from "~/types";
+import WorkspaceHeader from "~/components/WorkspaceHeader";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
@@ -28,5 +29,5 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
 };
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
-  return <Outlet />
+  return <><WorkspaceHeader /><Outlet /></>
 }
