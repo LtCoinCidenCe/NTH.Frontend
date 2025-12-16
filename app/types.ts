@@ -34,3 +34,16 @@ export const isVideoInfo = (candidate: any): candidate is VideoInfo => {
     // TODO give a proper validation
     return true;
 }
+
+export interface UserBasic {
+    id: number,
+    username: string,
+    displayname: string,
+    titleWords: string,
+    userRole: number
+}
+
+export const isUserBasic = (candidate: any): candidate is UserBasic => {
+    // TODO give a proper validation
+    return true;
+}
