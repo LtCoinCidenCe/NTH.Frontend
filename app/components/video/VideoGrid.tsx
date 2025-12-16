@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { JWTContext } from "../AppjwtProvider";
+import { JWTContext } from "../JWTProvider";
 import { ErrorContext } from "../ErrorToastProvider";
 import { isVideoInfo, type VideoInfo } from "~/types";
 import VideoCard from "./VideoCard";

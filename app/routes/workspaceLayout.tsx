@@ -2,7 +2,7 @@ import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/workspaceLayout";
 import { isJWTPayload } from "~/types";
 import WorkspaceHeader from "~/components/WorkspaceHeader";
-import AppjwtProvider from "~/components/AppjwtProvider";
+import JWTProvider from "~/components/JWTProvider";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
@@ -30,8 +30,8 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
 };
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
-  return <AppjwtProvider appjwt={loaderData.appjwt}>
+  return <JWTProvider appjwt={loaderData.appjwt}>
     <WorkspaceHeader NTHUsername={loaderData.NTHUsername} />
     <Outlet />
-  </AppjwtProvider>
+  </JWTProvider>
 }
