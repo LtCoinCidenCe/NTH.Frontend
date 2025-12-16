@@ -30,6 +30,7 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
 };
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
+  // console.log("workspace layout");
   return <JWTProvider appjwt={loaderData.appjwt}>
     <WorkspaceHeader NTHUsername={loaderData.NTHUsername} />
     <Outlet />

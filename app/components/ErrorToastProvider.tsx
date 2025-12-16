@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useCallback } from 'react';
 
 export const ErrorContext = createContext((message: string) => { });
 
@@ -6,14 +6,16 @@ export const ErrorContext = createContext((message: string) => { });
 const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => void }> = ({ message, isShow, onClose }) => {
   // 定时消失：默认5秒后关闭
   useEffect(() => {
+    // console.log("ErrorToast useEffect");
     if (isShow) {
       const timer = setTimeout(() => {
         onClose();
       }, 5000);
       return () => clearTimeout(timer); // 组件卸载时清除定时器
     }
-  }, [isShow, onClose]);
+  }, [message, isShow, onClose]);
 
+  // console.log("ErrorToast");
   return (
     // 固定在顶部居中，不占用文档流，不拦截点击事件
     <div
@@ -43,8 +45,6 @@ const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => vo
   );
 };
 
-
-
 // 全局状态管理（可集成到根组件，或用 Context 全局调用）
 const ErrorToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [errorState, setErrorState] = useState({
@@ -52,14 +52,14 @@ const ErrorToastProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     message: '',
   });
 
-  // 全局调用方法：外部组件可通过 props/Context 调用
-  const showErrorToast = (message: string) => {
-    setErrorState({ isShow: true, message });
-  };
-
-  const closeErrorToast = () => {
+  const closeErrorToast = useCallback(() => {
     setErrorState({ isShow: false, message: errorState.message });
-  };
+  }, []);
+
+  // 全局调用方法：外部组件可通过 props/Context 调用
+  const showErrorToast = useCallback((message: string) => {
+    setErrorState({ isShow: true, message });
+  }, []);
 
   return (
     <ErrorContext value={showErrorToast}>
