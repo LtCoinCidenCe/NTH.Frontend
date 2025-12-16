@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { ErrorContext } from "./ErrorToastProvider";
 import { isUserBasic, type UserBasic } from "~/types";
 import UserContext from "./UserContext";
 import JWTContext from "./JWTContext";
+import ErrorContext from "./ErrorContext";
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);

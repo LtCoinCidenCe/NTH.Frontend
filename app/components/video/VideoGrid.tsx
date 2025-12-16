@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { ErrorContext } from "../ErrorToastProvider";
 import { isVideoInfo, type VideoInfo } from "~/types";
 import VideoCard from "./VideoCard";
-import JWTContext from "../JWTContext";
+import JWTContext from "../provider/JWTContext";
+import ErrorContext from "../provider/ErrorContext";
 
 const VideoGrid: React.FC = () => {
   const errorContext = useContext(ErrorContext);

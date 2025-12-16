@@ -1,6 +1,5 @@
-import React, { useState, useEffect, createContext, useCallback } from 'react';
-
-export const ErrorContext = createContext((message: string) => { });
+import React, { useState, useEffect, useCallback } from 'react';
+import ErrorContext from './ErrorContext';
 
 // 错误提示组件（全局唯一，通过状态控制显示）
 const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => void }> = ({ message, isShow, onClose }) => {

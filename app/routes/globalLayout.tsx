@@ -1,5 +1,5 @@
 import { Outlet } from "react-router"
-import ErrorToastProvider from "~/components/ErrorToastProvider";
+import ErrorToastProvider from "~/components/provider/ErrorToastProvider";
 
 export async function clientLoader() {
   console.debug("GlobalLayout ClientLoader");

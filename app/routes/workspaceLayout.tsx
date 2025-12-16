@@ -2,8 +2,8 @@ import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/workspaceLayout";
 import { isJWTPayload } from "~/types";
 import WorkspaceHeader from "~/components/WorkspaceHeader";
-import JWTProvider from "~/components/JWTProvider";
-import UserContextProvider from "~/components/UserContextProvider";
+import JWTProvider from "~/components/provider/JWTProvider";
+import UserContextProvider from "~/components/provider/UserContextProvider";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");

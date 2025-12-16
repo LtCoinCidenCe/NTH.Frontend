@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import UserContext from "../UserContext";
+import UserContext from "../provider/UserContext";
 
 const UserGrid: React.FC = () => {
   const { users, setUsers } = useContext(UserContext);

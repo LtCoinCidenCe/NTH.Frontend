@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { ErrorContext } from "../ErrorToastProvider";
+import ErrorContext from "../provider/ErrorContext";
 
 const LoginForm: React.FC<{ username: string, password: string }> = ({ username, password }) => {
   const [NTHUsername, setNTHUsername] = useState(username);
