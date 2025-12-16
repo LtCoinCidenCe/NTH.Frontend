@@ -1,5 +1,5 @@
 import type { Route } from "./+types/videoRoute";
-import VideoGrid from "~/components/VideoGrid";
+import VideoGrid from "~/components/video/VideoGrid";
 
 export async function clientLoader() {
   console.debug("videoRoute ClientLoader");

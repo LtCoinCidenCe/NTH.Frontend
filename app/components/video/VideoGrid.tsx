@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { JWTContext } from "./AppjwtProvider";
-import { ErrorContext } from "./ErrorToastProvider";
+import { JWTContext } from "../AppjwtProvider";
+import { ErrorContext } from "../ErrorToastProvider";
 import { isVideoInfo, type VideoInfo } from "~/types";
+import VideoCard from "./VideoCard";
 
 const VideoGrid: React.FC = () => {
   const errorContext = useContext(ErrorContext);
@@ -32,7 +33,15 @@ const VideoGrid: React.FC = () => {
   if (videos.length === 0)
     return <p style={{ color: "#cccccc" }}>Loading Game...</p>;
   else
-    return <div><img className="w-[480px] h-[270px] object-cover" src={`${import.meta.env.VITE_BACKEND_URL}/api/Video/1/Thumbnail`} /></div>
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {videos.map((video) => (
+            <VideoCard key={video.id} video={video} />
+          ))}
+        </div>
+      </div>
+    );
 }
 
 export default VideoGrid;
