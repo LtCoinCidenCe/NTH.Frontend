@@ -10,7 +10,8 @@ export default [
       ]),
       route("author", "routes/authorRoute.tsx", [
         route(":id", "routes/authorDetailRoute.tsx")
-      ])
+      ]),
+      route("video", "routes/videoRoute.tsx"),
     ]),
     route("adder", "components/Adder.tsx"),
     route("annoying", "routes/annoyingRoute.tsx")

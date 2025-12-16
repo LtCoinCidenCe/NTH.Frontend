@@ -2,6 +2,7 @@ import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/workspaceLayout";
 import { isJWTPayload } from "~/types";
 import WorkspaceHeader from "~/components/WorkspaceHeader";
+import AppjwtProvider from "~/components/AppjwtProvider";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
@@ -25,9 +26,12 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
     return redirect("login");
   }
   console.debug("workspaceLayout ClientLoader");
-  return { message: "Hello, world!" };
+  return { appjwt, NTHUsername };
 };
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
-  return <><WorkspaceHeader /><Outlet /></>
+  return <AppjwtProvider appjwt={loaderData.appjwt}>
+    <WorkspaceHeader NTHUsername={loaderData.NTHUsername} />
+    <Outlet />
+  </AppjwtProvider>
 }

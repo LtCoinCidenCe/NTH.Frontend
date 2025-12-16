@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 
-const WorkspaceHeader: React.FC = () => {
+const WorkspaceHeader: React.FC<{ NTHUsername: string }> = ({ NTHUsername }) => {
   // 左侧导航菜单配置
   const leftMenus = [
     { label: '主页', path: '/' },
     { label: '用户', path: '/user' },
     { label: '作者', path: '/author' },
+    { label: '视频', path: '/video' },
   ];
 
   return (
