@@ -12,3 +12,25 @@ export const isJWTPayload = (candidate: any): candidate is JWTPayload => {
                     return true;
     return false;
 }
+
+export interface VideoInfo {
+    id: number,
+    title: string,
+    introduction: string,
+    youtubePage: string,
+    niconicoPage: string,
+    bilibiliPage: string,
+    authorID: number,
+    authorizedPerVideo: boolean,
+    uploadDate: Date,
+    statusTranslation: number,
+    statusScripting: number,
+    statusHardSubbing: number,
+    additionalRequirement: string,
+    finishedProductLink: string
+}
+
+export const isVideoInfo = (candidate: any): candidate is VideoInfo => {
+    // TODO give a proper validation
+    return true;
+}

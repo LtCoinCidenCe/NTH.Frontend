@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { JWTContext } from "./AppjwtProvider";
 import { ErrorContext } from "./ErrorToastProvider";
+import { isVideoInfo, type VideoInfo } from "~/types";
 
 const VideoGrid: React.FC = () => {
   const errorContext = useContext(ErrorContext);
   const jwt = useContext(JWTContext);
-  const [videos, setVideos] = useState<number[]>([]);
+  const [videos, setVideos] = useState<VideoInfo[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       const workStartedURL = `${import.meta.env.VITE_BACKEND_URL}/api/Video/WorkStarted`;
@@ -15,14 +16,21 @@ const VideoGrid: React.FC = () => {
         return;
       }
       const workStarted = await response.json();
-      errorContext("no problem");
-      setVideos([1]);
+      if (!Array.isArray(workStarted)) {
+        errorContext("/api/Video/WorkStarted is not array");
+        return;
+      }
+      if (!workStarted.every(video => isVideoInfo(video))) {
+        errorContext("/api/Video/WorkStarted doesn't have valid items");
+        return;
+      }
+      setVideos(workStarted);
     }
     fetchData();
     return;
-  }, []);
+  }, []); // useEffect
   if (videos.length === 0)
-    return <>super</>
+    return <p style={{ color: "#cccccc" }}>Loading Game...</p>;
   else
     return <div><img className="w-[480px] h-[270px] object-cover" src={`${import.meta.env.VITE_BACKEND_URL}/api/Video/1/Thumbnail`} /></div>
 }
