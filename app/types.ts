@@ -47,3 +47,24 @@ export const isUserBasic = (candidate: any): candidate is UserBasic => {
     // TODO give a proper validation
     return true;
 }
+
+export interface AuthorBasic {
+    id: number,
+    name: string,
+    youtubeHomePage: string,
+    niconicoHomePage: string,
+    bilibiliHomePage: string,
+    twitterHomePage: string,
+    authorizedPerVideo: boolean,
+    allVideoAuthorized: boolean,
+    authorizationChangeDate: Date,
+    additionalRequirements: string,
+    additionalRequirementsChangeDate: Date,
+    creationDate: Date,
+    contactUserID: number
+}
+
+export const isAuthorBasic = (candidate: any): candidate is AuthorBasic => {
+    // TODO give a proper validation
+    return true;
+}

@@ -4,6 +4,7 @@ import { isJWTPayload } from "~/types";
 import WorkspaceHeader from "~/components/WorkspaceHeader";
 import JWTProvider from "~/components/provider/JWTProvider";
 import UserContextProvider from "~/components/provider/UserContextProvider";
+import AuthorContextProvider from "~/components/provider/AuthorContextProvider";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
@@ -32,10 +33,13 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
   // console.log("workspace layout");
-  return <JWTProvider appjwt={loaderData.appjwt}>
-    <UserContextProvider>
-      <WorkspaceHeader NTHUsername={loaderData.NTHUsername} />
-      <Outlet />
-    </UserContextProvider>
-  </JWTProvider>
+  return (
+    <JWTProvider appjwt={loaderData.appjwt}>
+      <UserContextProvider>
+        <AuthorContextProvider>
+          <WorkspaceHeader NTHUsername={loaderData.NTHUsername} />
+          <Outlet />
+        </AuthorContextProvider>
+      </UserContextProvider>
+    </JWTProvider>);
 }
