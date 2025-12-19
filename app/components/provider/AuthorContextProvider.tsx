@@ -26,7 +26,6 @@ const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         errorContext(`${URLPath} doesn't have valid items`);
         return;
       }
-      console.log(allAuthors);
       setAuthors(allAuthors);
     }
     fetchData();

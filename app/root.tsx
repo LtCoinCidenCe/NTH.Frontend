@@ -53,7 +53,7 @@ export async function clientLoader() {
 }
 
 export default function App() {
-  console.debug("root rendering");
+  // console.debug("root rendering"); // triggering all the time
   return <Outlet />;
 }
 
