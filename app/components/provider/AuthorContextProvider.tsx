@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { isAuthorBasic, type AuthorBasic } from "~/types";
 import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
 import AuthorContext from "./AuthorContext";
-import { isAuthorBasic, type AuthorBasic } from "~/types";
 
 const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);
