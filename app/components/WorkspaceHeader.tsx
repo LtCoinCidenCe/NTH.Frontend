@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 
-const WorkspaceHeader: React.FC<{ NTHUsername: string }> = ({ NTHUsername }) => {
+const WorkspaceHeader: React.FC<{ NTHUsername: string, userID: number }> = ({ NTHUsername, userID }) => {
   // 左侧导航菜单配置
   const leftMenus = [
     { label: '主页', path: '/' },
@@ -40,6 +40,8 @@ const WorkspaceHeader: React.FC<{ NTHUsername: string }> = ({ NTHUsername }) => 
               to="/login"
               className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
             >
+              <img src={`${import.meta.env.VITE_BACKEND_URL}/api/User/${userID}/Icon`} className="w-[35px] h-[35px] rounded-full mr-2" />
+
               {/* 用户图标 */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"

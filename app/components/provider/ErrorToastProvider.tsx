@@ -5,7 +5,6 @@ import ErrorContext from './ErrorContext';
 const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => void }> = ({ message, isShow, onClose }) => {
   // 定时消失：默认5秒后关闭
   useEffect(() => {
-    // console.log("ErrorToast useEffect");
     if (isShow) {
       const timer = setTimeout(() => {
         onClose();
@@ -14,7 +13,6 @@ const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => vo
     }
   }, [message, isShow, onClose]);
 
-  // console.log("ErrorToast");
   return (
     // 固定在顶部居中，不占用文档流，不拦截点击事件
     <div

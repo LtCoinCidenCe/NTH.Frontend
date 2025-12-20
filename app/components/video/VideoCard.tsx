@@ -19,7 +19,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
       <div className="relative w-[320px] h-[180px]">
         <img src={`${import.meta.env.VITE_BACKEND_URL}/api/Video/${video.id}/Thumbnail`}
           alt={`${video.title} 的缩略图`}
-           className="w-full h-full object-cover"/>
+          className="w-full h-full object-cover" />
       </div>
 
       {/* 视频信息区域：内边距、文字换行处理 */}
