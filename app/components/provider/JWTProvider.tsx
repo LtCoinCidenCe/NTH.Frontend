@@ -39,6 +39,7 @@ const JWTProvider: React.FC<{ loaderJWT: string, initialRefreshTimer: number, ch
           errorContext("用户名或密码不正确");
           return;
         }
+        console.log("update jwt");
         if (!isMounted) // super edge case because of await
           return;
         localStorage.setItem("appjwt", token);

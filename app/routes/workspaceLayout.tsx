@@ -26,10 +26,10 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
     // jwt exp is second, but JavaScript Date is millisecond
     let expireTime = new Date(exp * 1000);
     let remaining = expireTime.valueOf() - new Date().valueOf();
+    // this is done on behalf of JWTProvider
     let initialRefreshTimer = Math.max(remaining - 1 * 60 * 1000, 0);
     console.debug(`${payload}, expire time: ${expireTime}`, remaining, initialRefreshTimer);
-    let userID = Number.parseInt(aud.substring(2));
-    return { loaderJWT, NTHUsername, userID, initialRefreshTimer };
+    return { loaderJWT, NTHUsername, userID: Number.parseInt(aud.substring(2)), initialRefreshTimer };
   }
   catch (error) {
     return redirect("login");
