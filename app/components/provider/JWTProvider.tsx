@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
-import { isJWTPayload } from "~/types";
 
-const JWTProvider: React.FC<{ loaderJWTjwt: string, children: React.ReactNode }> = ({ loaderJWTjwt, children }) => {
+/**
+ * This component has some trust on workspaceLayout,
+ * so don't mess it.
+ */
+const JWTProvider: React.FC<{ loaderJWT: string, initialRefreshTimer: number, children: React.ReactNode }> = ({ loaderJWT, initialRefreshTimer, children }) => {
   const errorContext = useContext(ErrorContext);
-  const [jwtfeed, setjwtfeed] = useState(loaderJWTjwt);
+  const [jwtfeed, setjwtfeed] = useState(loaderJWT);
 
   useEffect(() => {
     // 通过闭包保存变量，在useEffect返回清理函数中打false
@@ -53,35 +56,13 @@ const JWTProvider: React.FC<{ loaderJWTjwt: string, children: React.ReactNode }>
 
 
     // run once after login
-    try {
-      let NTHUsername = localStorage.getItem("NTHUsername");
-      let NTHPassword = localStorage.getItem("NTHPassword");
-      if (NTHUsername === null || NTHPassword === null || loaderJWTjwt === null) {
-        throw new Error("no appjwt")
-      }
-      const payloadText = atob(loaderJWTjwt.split(".")[1]);
-      const payload = JSON.parse(payloadText);
-      if (!isJWTPayload(payload)) {
-        throw new Error("no appjwt")
-      }
-      const { exp, iss, aud } = payload;
-      // jwt exp is second, but JavaScript Date is millisecond
-      let expireTime = new Date(exp * 1000);
-      let contemporary = new Date();
-      let remaining = expireTime.valueOf() - contemporary.valueOf();
-      let timecount = Math.max(remaining - 1 * 60 * 1000, 0);
+    updater = Number(setTimeout(relogin, initialRefreshTimer));
 
-      updater = Number(setTimeout(relogin, timecount));
-
-      return () => {
-        isMounted = false;
-        clearTimeout(updater);
-        console.log('定时登录器已清除，组件卸载');
-      };
-    }
-    catch (error) {
-      console.error(error);
-    }
+    return () => {
+      isMounted = false;
+      clearTimeout(updater);
+      console.log('定时登录器已清除，组件卸载');
+    };
   }, []); // useEffect
 
   return <JWTContext value={jwtfeed}>{children}</JWTContext>;

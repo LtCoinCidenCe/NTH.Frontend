@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { isUserBasic, type UserBasic } from "~/types";
 import UserContext from "./UserContext";
 import JWTContext from "./JWTContext";
 import ErrorContext from "./ErrorContext";
+import { UserBasicZod, type UserBasic } from "~/types";
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);
@@ -22,11 +22,12 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
         errorContext(`数据读取失败，请刷新。${URLPath} is not array`);
         return;
       }
-      if (!allUsers.every(user => isUserBasic(user))) {
+      const parsedUsers = allUsers.map(x => UserBasicZod.safeParse(x));
+      if (!parsedUsers.every(x => x.success)) {
         errorContext(`${URLPath} doesn't have valid items`);
         return;
       }
-      setUsers(allUsers);
+      setUsers(parsedUsers.map(x => x.data));
     };
     fetchData();
     return;

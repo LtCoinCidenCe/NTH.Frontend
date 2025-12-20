@@ -1,10 +1,10 @@
 import { Outlet, redirect } from "react-router";
 import type { Route } from "./+types/workspaceLayout";
-import { isJWTPayload } from "~/types";
 import WorkspaceHeader from "~/components/WorkspaceHeader";
 import JWTProvider from "~/components/provider/JWTProvider";
 import UserContextProvider from "~/components/provider/UserContextProvider";
 import AuthorContextProvider from "~/components/provider/AuthorContextProvider";
+import { JwtClaimsSchema } from "~/types";
 
 export async function clientLoader({ }: Route.ClientLoaderArgs) {
   let NTHUsername = localStorage.getItem("NTHUsername");
@@ -14,19 +14,22 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
     return redirect("login");
   }
   try {
-    const payloadText = atob(loaderJWT.split(".")[1]);
-    const payload = JSON.parse(payloadText);
-    if (!isJWTPayload(payload)) {
+    const parts = loaderJWT.split(".");
+    if (parts.length !== 3)
       return redirect("login")
-    }
-    const { exp, iss, aud } = payload;
+
+    const payloadbase64 = parts[1];
+    const jsonStr = atob(payloadbase64) // ignore the legacy thing
+    const payload = JSON.parse(jsonStr); // leave it to catch error
+    const { exp, iss, aud } = JwtClaimsSchema.parse(payload); // leave it to catch error
+
     // jwt exp is second, but JavaScript Date is millisecond
     let expireTime = new Date(exp * 1000);
-    let contemporary = new Date();
-    let remaining = expireTime.valueOf() - contemporary.valueOf();
-    console.debug(`${payload}, expire time: ${expireTime}`, contemporary, remaining);
+    let remaining = expireTime.valueOf() - new Date().valueOf();
+    let initialRefreshTimer = Math.max(remaining - 1 * 60 * 1000, 0);
+    console.debug(`${payload}, expire time: ${expireTime}`, remaining, initialRefreshTimer);
     let userID = Number.parseInt(aud.substring(2));
-    return { loaderJWT, NTHUsername, userID };
+    return { loaderJWT, NTHUsername, userID, initialRefreshTimer };
   }
   catch (error) {
     return redirect("login");
@@ -35,7 +38,7 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
 
 export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
   return (
-    <JWTProvider loaderJWTjwt={loaderData.loaderJWT}>
+    <JWTProvider loaderJWT={loaderData.loaderJWT} initialRefreshTimer={loaderData.initialRefreshTimer}>
       <UserContextProvider>
         <AuthorContextProvider>
           <WorkspaceHeader NTHUsername={loaderData.NTHUsername} userID={loaderData.userID} />
