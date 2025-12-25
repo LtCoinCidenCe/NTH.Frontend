@@ -15,7 +15,5 @@ export default [
             ]),
             route("video", "routes/videoRoute.tsx"),
         ]),
-        route("adder", "components/Adder.tsx"),
-        route("annoying", "routes/annoyingRoute.tsx")
     ])
 ] satisfies RouteConfig;

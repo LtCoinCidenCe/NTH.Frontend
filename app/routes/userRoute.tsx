@@ -5,6 +5,7 @@ import UserGrid from "~/components/user/UserGrid";
 export async function clientLoader({ }: Route.ClientActionArgs) {
 }
 
-export default function userRoute({ loaderData }: Route.ComponentProps) {
+export default function userRoute({ loaderData, matches, params, actionData }: Route.ComponentProps) {
+  const [root, global, workspace, user] = matches;
   return <><UserGrid /><Outlet /></>;
 }

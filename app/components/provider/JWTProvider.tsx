@@ -3,6 +3,7 @@ import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
 
 /**
+ * Using React context provider because it can be updated timely
  * This component has some trust on workspaceLayout,
  * so don't mess it.
  */
