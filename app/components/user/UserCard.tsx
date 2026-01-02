@@ -51,7 +51,7 @@ const UserCard: React.FC<UserCardProps> = ({
               {roles.map(role => (
                 <span
                   key={role}
-                  className="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-700"
+                  className="text-xs px-2 py-1 bg-emerald-100 rounded-full text-gray-700"
                 >
                   {role}
                 </span>
