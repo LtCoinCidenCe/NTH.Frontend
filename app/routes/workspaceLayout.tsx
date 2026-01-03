@@ -28,8 +28,8 @@ export async function clientLoader({ }: Route.ClientLoaderArgs) {
     let remaining = expireTime.valueOf() - new Date().valueOf();
     // this is done on behalf of JWTProvider
     let initialRefreshTimer = Math.max(remaining - 1 * 60 * 1000, 0);
-    console.debug(`${payload}, expire time: ${expireTime}`, remaining, initialRefreshTimer);
-    return { loaderJWT, NTHUsername, userID: Number.parseInt(aud.substring(2)), initialRefreshTimer };
+    console.debug(payload, `expire time: ${expireTime}`, remaining, initialRefreshTimer);
+    return { loaderJWT, NTHUsername, userID: aud, initialRefreshTimer };
   }
   catch (error) {
     return redirect("login");
@@ -45,5 +45,6 @@ export default function workspaceLayout({ loaderData }: Route.ComponentProps) {
           <Outlet />
         </AuthorContextProvider>
       </UserContextProvider>
-    </JWTProvider>);
+    </JWTProvider>
+  );
 }

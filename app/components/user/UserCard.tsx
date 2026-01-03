@@ -1,5 +1,6 @@
 import React from "react";
 import futagotoYukari from "./futagotoYukari.png"
+import { Link } from "react-router";
 
 // 定义用户角色映射
 const roleMap = [
@@ -11,30 +12,25 @@ const roleMap = [
 ];
 
 interface UserCardProps {
+  userid: number;
   username: string;
   displayname: string;
   userRole: number;
-  avatarUrl: string;
 }
 
-const UserCard: React.FC<UserCardProps> = ({
-  username,
-  displayname,
-  userRole,
-  avatarUrl,
-}) => {
+const UserCard: React.FC<UserCardProps> = ({ userid, username, displayname, userRole, }) => {
   // 计算用户拥有的角色
   const roles = roleMap
     .filter(role => (userRole & role.mask) !== 0)
     .map(role => role.name);
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-100">
+    <Link to={`${userid}`} className="border border-gray-200 rounded-lg p-4 transition-colors duration-200 hover:bg-gray-100">
       <div className="flex items-start gap-4">
         {/* 圆形头像 */}
         <div className="flex-shrink-0">
           <img
-            src={avatarUrl}
+            src={`${import.meta.env.VITE_BACKEND_URL}/api/User/${userid}/Icon`}
             className="w-16 h-16 rounded-full object-cover"
             onError={(e) => { e.currentTarget.src = futagotoYukari }}
           />
@@ -60,7 +56,7 @@ const UserCard: React.FC<UserCardProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
