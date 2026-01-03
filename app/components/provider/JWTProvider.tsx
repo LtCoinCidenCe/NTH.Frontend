@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
 import { parseJWT } from "~/tools/JWTParser";
@@ -68,13 +68,18 @@ const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = 
     };
   }, []); // useEffect
 
+  const food = useMemo(() => {
+    const info = parseJWT(jwtfeed);
+    if (!info)
+      throw new Error("parsing JWT not successful");
+    const { expireTime, userIdentifier } = info;
+    // console.debug("JWTParsed");
+    return { jwt: jwtfeed, expireTime, userIdentifier };
+  }, [jwtfeed]); // useMemo
 
-  const info = parseJWT(jwtfeed);
-  if (!info)
-    throw new Error("parsing JWT not successful");
-  const { expireTime, userIdentifier } = info;
+  // console.debug("JWTProvider");
 
-  return <JWTContext value={{ jwt: jwtfeed, expireTime, userIdentifier }}>{children}</JWTContext>;
+  return <JWTContext value={food}>{children}</JWTContext>;
 };
 
 export default JWTProvider;
