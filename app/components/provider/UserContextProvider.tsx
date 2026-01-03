@@ -6,7 +6,7 @@ import { UserBasicZod, type UserBasic } from "~/types";
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);
-  const jwt = useContext(JWTContext);
+  const { jwt } = useContext(JWTContext);
   const [users, setUsers] = useState<UserBasic[]>([]);
   useEffect(() => {
     const fetchData = async () => {

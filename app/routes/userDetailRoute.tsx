@@ -1,12 +1,13 @@
+import UserDetail from "~/components/user/UserDetail";
 import type { Route } from "./+types/userDetailRoute";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const userID = Number.parseInt(params.id);
   if (Number.isNaN(userID))
-    return new Response("that's not a userID", { status: 400 });
+    throw new Error("that's not a userID");
   return userID;
 }
 
 export default function userDetailRoute({ params, loaderData }: Route.ComponentProps) {
-  return <div>{params.id}</div>
+  return <UserDetail userID={loaderData} />
 }

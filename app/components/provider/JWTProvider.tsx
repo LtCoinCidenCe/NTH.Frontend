@@ -1,23 +1,29 @@
 import { useContext, useEffect, useState } from "react";
 import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
+import { parseJWT } from "~/tools/JWTParser";
 
 /**
  * Using React context provider because it can be updated timely
  * This component has some trust on workspaceLayout,
  * so don't mess it.
  */
-const JWTProvider: React.FC<{ loaderJWT: string, initialRefreshTimer: number, children: React.ReactNode }> = ({ loaderJWT, initialRefreshTimer, children }) => {
+const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = ({ loaderJWT, children }) => {
   const errorContext = useContext(ErrorContext);
   const [jwtfeed, setjwtfeed] = useState(loaderJWT);
 
   useEffect(() => {
+    const parsedInfo = parseJWT(loaderJWT);
+    if (!parsedInfo)
+      throw new Error("parsing JWT not successful");
+    const { expireTime, userIdentifier } = parsedInfo;
+    let remaining = expireTime.valueOf() - new Date().valueOf();
+    let initialRefreshTimer = Math.max(remaining - 1 * 60 * 1000, 0);
+
+
     // 通过闭包保存变量，在useEffect返回清理函数中打false
     let isMounted = true;
     let updater = 0;
-
-
-
     // periodic relogin
     const relogin = async () => {
       if (!isMounted)
@@ -67,7 +73,13 @@ const JWTProvider: React.FC<{ loaderJWT: string, initialRefreshTimer: number, ch
     };
   }, []); // useEffect
 
-  return <JWTContext value={jwtfeed}>{children}</JWTContext>;
+
+  const info = parseJWT(jwtfeed);
+  if (!info)
+    throw new Error("parsing JWT not successful");
+  const { expireTime, userIdentifier } = info;
+
+  return <JWTContext value={{ jwt: jwtfeed, expireTime, userIdentifier }}>{children}</JWTContext>;
 };
 
 export default JWTProvider;

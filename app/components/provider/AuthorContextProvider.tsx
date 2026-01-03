@@ -6,7 +6,7 @@ import AuthorContext from "./AuthorContext";
 
 const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);
-  const jwt = useContext(JWTContext);
+  const { jwt } = useContext(JWTContext);
   const [authors, setAuthors] = useState<AuthorBasic[]>([]);
   useEffect(() => {
     const fetchData = async () => {
