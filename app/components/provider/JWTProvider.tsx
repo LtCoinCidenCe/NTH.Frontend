@@ -3,11 +3,6 @@ import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
 import { parseJWT } from "~/tools/JWTParser";
 
-/**
- * Using React context provider because it can be updated timely
- * This component has some trust on workspaceLayout,
- * so don't mess it.
- */
 const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = ({ loaderJWT, children }) => {
   const errorContext = useContext(ErrorContext);
   const [jwtfeed, setjwtfeed] = useState(loaderJWT);
