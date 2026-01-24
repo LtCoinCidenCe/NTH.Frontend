@@ -38,7 +38,11 @@ const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = 
       }
       const userLoginDTO = { Username: NTHUsername, Password: NTHPassword };
       try {
-        const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(userLoginDTO) });
+        const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`,
+          {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userLoginDTO)
+          });
         const token = await fetched.text();
         if (fetched.status >= 500) {
           errorContext("server error");
@@ -56,7 +60,7 @@ const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = 
         setReady(true);
       }
       catch (error) {
-        console.error(error);
+        errorContext(`${error}`);
         return;
       }
       // if there is no problem then schedule next login

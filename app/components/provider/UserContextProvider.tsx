@@ -12,22 +12,27 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchData = async () => {
       const URLPath = "/api/User";
       const allUsersURL = `${import.meta.env.VITE_BACKEND_URL}${URLPath}`;
-      const response = await fetch(allUsersURL, { method: "GET", headers: { "Authorization": `Bearer ${jwt}` } });
-      if (!response.ok) {
-        errorContext("数据读取失败，请刷新");
-        return;
+      try {
+        const response = await fetch(allUsersURL, { method: "GET", headers: { "Authorization": `Bearer ${jwt}` } });
+        if (!response.ok) {
+          errorContext("数据读取失败，请刷新");
+          return;
+        }
+        const allUsers = await response.json();
+        if (!Array.isArray(allUsers)) {
+          errorContext(`数据读取失败，请刷新。${URLPath} is not array`);
+          return;
+        }
+        const parsedUsers = allUsers.map(x => UserBasicZod.safeParse(x));
+        if (!parsedUsers.every(x => x.success)) {
+          errorContext(`${URLPath} doesn't have valid items`);
+          return;
+        }
+        setUsers(parsedUsers.map(x => x.data));
+      } catch (error) {
+        console.log("network error");
+        errorContext(`${error}`);
       }
-      const allUsers = await response.json();
-      if (!Array.isArray(allUsers)) {
-        errorContext(`数据读取失败，请刷新。${URLPath} is not array`);
-        return;
-      }
-      const parsedUsers = allUsers.map(x => UserBasicZod.safeParse(x));
-      if (!parsedUsers.every(x => x.success)) {
-        errorContext(`${URLPath} doesn't have valid items`);
-        return;
-      }
-      setUsers(parsedUsers.map(x => x.data));
     };
     fetchData();
     return;
