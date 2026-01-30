@@ -12,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "yarn global add patch-package",
+	// "postCreateCommand": "yarn global add patch-package",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

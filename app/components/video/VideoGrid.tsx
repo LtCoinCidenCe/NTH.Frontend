@@ -6,7 +6,7 @@ import ErrorContext from "../provider/ErrorContext";
 
 const VideoGrid: React.FC = () => {
   const errorContext = useContext(ErrorContext);
-  const jwt = useContext(JWTContext);
+  const { jwt } = useContext(JWTContext);
   const [videos, setVideos] = useState<VideoInfo[]>([]);
   useEffect(() => {
     const fetchData = async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 
-const WorkspaceHeader: React.FC<{ NTHUsername: string, userID: number }> = ({ NTHUsername, userID }) => {
+const WorkspaceHeader: React.FC<{ NTHUsername: string, userIdentifier: string }> = ({ NTHUsername, userIdentifier }) => {
   // 左侧导航菜单配置
   const leftMenus = [
     { label: '主页', path: '/' },
@@ -40,22 +40,11 @@ const WorkspaceHeader: React.FC<{ NTHUsername: string, userID: number }> = ({ NT
               to="/login"
               className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
             >
-              <img src={`${import.meta.env.VITE_BACKEND_URL}/api/User/${userID}/Icon`} className="w-[35px] h-[35px] rounded-full mr-2" />
+              <img src={`${import.meta.env.VITE_BACKEND_URL}/api/User/${userIdentifier.substring(2)}/Icon`} className="w-[35px] h-[35px] rounded-full mr-2" />
 
               {/* 用户图标 */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 640 640">
+                <path fill="#9c7592" d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />
               </svg>
               切换用户
             </Link>
