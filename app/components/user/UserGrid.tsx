@@ -11,7 +11,7 @@ const UserGrid: React.FC = () => {
   const fa = filterText.toLowerCase();
 
   // 备用
-  const filterFormSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const filterFormSubmit: React.SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
   }
 
@@ -36,7 +36,7 @@ const UserGrid: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {users.filter(x => x.username.toLowerCase().includes(fa) || x.displayname.toLowerCase().includes(fa))
           .map((user) => (
-            <UserCard key={user.id} userid={user.id} username={user.username}
+            <UserCard key={user.id} userid={user.id} username={user.username} iconid={user.userIconID}
               displayname={user.displayname} userRole={user.userRole} />
           ))}
       </div>

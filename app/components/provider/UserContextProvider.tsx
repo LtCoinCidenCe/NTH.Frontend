@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "./UserContext";
 import JWTContext from "./JWTContext";
 import ErrorContext from "./ErrorContext";
-import { UserBasicZod, type UserBasic } from "~/types";
+import { User0, UserBasicZod, type UserBasic } from "~/types";
 
 const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const errorContext = useContext(ErrorContext);
-  const { jwt } = useContext(JWTContext);
+  const { jwt, userIdentifier } = useContext(JWTContext);
   const [users, setUsers] = useState<UserBasic[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserBasic>(User0);
   useEffect(() => {
     const fetchData = async () => {
       const URLPath = "/api/User";
@@ -28,7 +29,14 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
           errorContext(`${URLPath} doesn't have valid items`);
           return;
         }
-        setUsers(parsedUsers.map(x => x.data));
+        const fruit = parsedUsers.map(x => x.data);
+        const current = fruit.find(x => x.id === Number.parseInt(userIdentifier.substring(2)));
+        if (!current) {
+          errorContext("数据读取失败，请刷新。current user failed");
+          return;
+        }
+        setUsers(fruit);
+        setCurrentUser(current);
       } catch (error) {
         console.log("network error");
         errorContext(`${error}`);
@@ -38,7 +46,7 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return;
   }, []); // useEffect
 
-  return <UserContext value={{ users, setUsers }}>{children}</UserContext>;
+  return <UserContext value={{ users, currentUser, setUsers }}>{users.length > 0 ? children : undefined}</UserContext>;
 };
 
 export default UserContextProvider;

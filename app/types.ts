@@ -41,6 +41,7 @@ export const UserBasicZod = zod.object({
     id: zod.number(),
     username: zod.string(),
     displayname: zod.string(),
+    userIconID: zod.number(),
     titleWords: zod.string(),
     userRole: zod.number(),
     creationDate: zod.coerce.date(),
@@ -50,6 +51,8 @@ export type UserBasic = zod.infer<typeof UserBasicZod>;
 
 export const isUserBasic = (candidate: any): candidate is UserBasic =>
     UserBasicZod.safeParse(candidate).success
+
+export const User0: UserBasic = { id: 0, username: "", displayname: "", userIconID: 0, titleWords: "", userRole: 0, creationDate: new Date() };
 
 
 export const AuthorBasicZod = zod.object({

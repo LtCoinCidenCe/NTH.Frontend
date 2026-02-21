@@ -14,11 +14,12 @@ const roleMap = [
 interface UserCardProps {
   userid: number;
   username: string;
+  iconid: number;
   displayname: string;
   userRole: number;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ userid, username, displayname, userRole, }) => {
+const UserCard: React.FC<UserCardProps> = ({ userid, username, iconid, displayname, userRole }) => {
   // 计算用户拥有的角色
   const roles = roleMap
     .filter(role => (userRole & role.mask) !== 0)
@@ -29,9 +30,8 @@ const UserCard: React.FC<UserCardProps> = ({ userid, username, displayname, user
       <div className="flex items-start gap-4">
         {/* 圆形头像 */}
         <div className="flex-shrink-0">
-          <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/api/User/${userid}/Icon`}
-            className="w-16 h-16 rounded-full object-cover"
+          <img className="w-16 h-16 rounded-full object-cover"
+            src={iconid === 0 ? futagotoYukari : `${import.meta.env.VITE_BACKEND_URL}/api/User/Icon/${iconid}`}
             onError={(e) => { e.currentTarget.src = futagotoYukari }}
           />
         </div>
