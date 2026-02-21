@@ -8,7 +8,7 @@ const LoginForm: React.FC<{ username: string, password: string }> = ({ username,
   const [hidePassword, setHidePassword] = useState("password");
   const navigator = useNavigate();
   const errorContext = useContext(ErrorContext);
-  const onLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onLoginSubmit: React.SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (!(NTHUsername.length > 2 && NTHPassword.length > 5)) {
       errorContext("用户名太短或密码太短");
@@ -101,7 +101,7 @@ const LoginForm: React.FC<{ username: string, password: string }> = ({ username,
 
         {/* 登录按钮：全屏宽度、渐变背景、悬停效果 */}
         <button
-          className="w-full py-3 px-4 rounded-lg bg-linear-to-r from-20% from-purple-600 to-80% to-[#ea8a15] text-white font-medium hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-all shadow-md hover:shadow-lg"
+          className="w-full py-3 px-4 rounded-lg bg-linear-to-r from-20% from-purple-600 to-80% to-[#ea8a15] text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-all shadow-md hover:shadow-lg/40"
           type="submit"
         // onClick={OnButtonClick}
         >
