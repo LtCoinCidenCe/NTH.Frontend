@@ -14,7 +14,7 @@ const roleMap = [
 interface UserCardProps {
   userid: number;
   username: string;
-  iconid: number;
+  iconid: string;
   displayname: string;
   userRole: number;
 }
@@ -31,7 +31,7 @@ const UserCard: React.FC<UserCardProps> = ({ userid, username, iconid, displayna
         {/* 圆形头像 */}
         <div className="flex-shrink-0">
           <img className="w-16 h-16 rounded-full object-cover"
-            src={iconid === 0 ? futagotoYukari : `${import.meta.env.VITE_BACKEND_URL}/api/User/Icon/${iconid}`}
+            src={iconid === "00000000-0000-0000-0000-000000000000" ? futagotoYukari : `${import.meta.env.VITE_BACKEND_URL}/api/User/Icon/${iconid}`}
             onError={(e) => { e.currentTarget.src = futagotoYukari }}
           />
         </div>
