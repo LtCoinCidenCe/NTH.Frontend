@@ -16,7 +16,11 @@ const LoginForm: React.FC<{ username: string, password: string }> = ({ username,
     }
     const userLoginDTO = { Username: NTHUsername, Password: NTHPassword };
     try {
-      const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(userLoginDTO) });
+      const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`,
+        {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userLoginDTO), credentials: "include"
+        });
       const token = await fetched.text();
       if (fetched.status >= 500) {
         errorContext("server error");
