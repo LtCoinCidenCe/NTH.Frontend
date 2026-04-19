@@ -11,6 +11,7 @@ const WorkspaceHeader: React.FC<{ NTHUsername: string, userIdentifier: string }>
     { label: '用户', path: '/user' },
     { label: '作者', path: '/author' },
     { label: '视频', path: '/video' },
+    { label: '导出', path: '/export' }
   ];
 
   return (
