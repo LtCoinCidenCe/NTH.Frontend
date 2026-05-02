@@ -14,7 +14,8 @@ export default [
                 route(":id", "routes/authorDetailRoute.tsx")
             ]),
             route("video", "routes/videoRoute.tsx"),
-            route("export","routes/exportRoute.tsx")
+            route("export","routes/exportRoute.tsx"),
+            route("personal","routes/personalRoute.tsx"),
         ]),
     ])
 ] satisfies RouteConfig;
