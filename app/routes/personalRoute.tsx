@@ -1,6 +1,9 @@
-export async function clientLoader({}) {
+import type { Route } from "./+types/personalRoute";
+import PersonalPage from "~/components/personal/PersonalPage";
+
+export async function clientLoader({ }: Route.ClientLoaderArgs) {
 }
 
-export default function personalRoute() {
-  return <div>个人中心</div>;
+export default function personalRoute({ }: Route.ComponentProps) {
+  return <PersonalPage />;
 }
