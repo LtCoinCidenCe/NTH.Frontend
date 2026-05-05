@@ -15,8 +15,8 @@ const WorkspaceHeader: React.FC<{ NTHUsername: string, userIdentifier: string }>
   ];
 
   return (
-    // 顶部固定导航栏，z-50 确保在页面最上层
-    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    // 顶部固定导航栏，z-20 确保在页面最上层
+    <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="container mx-auto px-4">
         {/*  flex 布局：左侧菜单 + 右侧切换用户 */}
         <div className="flex flex-row items-center justify-between h-16">

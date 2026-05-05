@@ -16,7 +16,7 @@ const ErrorToast: React.FC<{ message: string, isShow: boolean, onClose: () => vo
   return (
     // 固定在顶部居中，不占用文档流，不拦截点击事件
     <div
-      className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ease-in-out ${isShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[+20px] pointer-events-none'}`}
+      className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 z-75 transition-all duration-300 ease-in-out ${isShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[+20px] pointer-events-none'}`}
       style={{ pointerEvents: 'none' }} // 关键：不占用点击焦点，底层元素可正常点击
     >
       <div className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-md">

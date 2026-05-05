@@ -6,8 +6,14 @@ interface AvatarCropProps {
 
 const AvatarCrop: React.FC<AvatarCropProps> = ({ onCropComplete }) => {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
+  const [originalBitmap, setOriginalBitmap] = useState<ImageBitmap | null>(null);
+
+  const [heidth, setHeidth] = useState(200);
+
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
@@ -19,9 +25,20 @@ const AvatarCrop: React.FC<AvatarCropProps> = ({ onCropComplete }) => {
   const CROP_SIZE = 200;
 
   // 选择图片
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("debug");
     const file = e.target.files?.[0];
     if (!file) return;
+    setOriginalFile(file);
+    const dotbitmap = await createImageBitmap(file);
+    if (dotbitmap.width < 200 || dotbitmap.height < 200) {
+      alert("请上传至少200x200像素的图片");
+      return;
+    }
+    setOriginalBitmap(dotbitmap);
+    setHeidth(200);
+    setPosition({ x: 0, y: 0 });
+
     const reader = new FileReader();
     reader.onload = (ev) => {
       const img = new Image();
@@ -36,27 +53,28 @@ const AvatarCrop: React.FC<AvatarCropProps> = ({ onCropComplete }) => {
     };
     reader.readAsDataURL(file);
   };
-  
+
   // 鼠标/触摸拖动
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    console.log("scale", scale);
     console.log("position", position);
-    console.log("startPos", startPos);
     console.log("client", { x: e.clientX, y: e.clientY });
-    setStartPos({ x: e.clientX - position.x, y: e.clientY - position.y });
+
+    setIsDragging(true);
+    setStartPos({ x: position.x - e.clientX, y: position.y - e.clientY });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    console.log("client", { x: e.clientX, y: e.clientY });
     if (!isDragging) return;
     setPosition({
-      x: Math.min(0, e.clientX - startPos.x),
-      y: Math.min(0, e.clientY - startPos.y),
+      x: Math.min(0, e.clientX + startPos.x),
+      y: Math.min(0, e.clientY + startPos.y),
     });
   };
 
-  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseUp = () => {
+    console.log("startPos", startPos);
+    setIsDragging(false)
+  };
 
   // 滚轮缩放
   const handleWheel = (e: React.WheelEvent) => {
@@ -66,34 +84,36 @@ const AvatarCrop: React.FC<AvatarCropProps> = ({ onCropComplete }) => {
 
   // 绘制裁剪画布
   useEffect(() => {
-    if (!originalImage || !canvasRef.current || !imageRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    (async () => {
+      if (!originalImage || !canvasRef.current || !imageRef.current || !originalBitmap) return;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
+      // ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
 
-    // 绘制灰色遮罩
-    ctx.fillStyle = "rgba(0,0,0,0.4)";
-    ctx.fillRect(0, 0, CROP_SIZE, CROP_SIZE);
+      // // 绘制灰色遮罩
+      // ctx.fillStyle = "rgba(0,0,0,0.4)";
+      // ctx.fillRect(0, 0, CROP_SIZE, CROP_SIZE);
 
-    // 绘制圆形裁剪洞
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, CROP_SIZE, CROP_SIZE);
-    // ctx.arc(CROP_SIZE / 2, CROP_SIZE / 2, CROP_SIZE / 2, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
+      // // 绘制圆形裁剪洞
+      // ctx.save();
+      // ctx.beginPath();
+      // ctx.rect(0, 0, CROP_SIZE, CROP_SIZE);
+      // // ctx.arc(CROP_SIZE / 2, CROP_SIZE / 2, CROP_SIZE / 2, 0, Math.PI * 2);
+      // ctx.clip();
+      // ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
 
-    // 绘制图片
-    ctx.drawImage(
-      imageRef.current,
-      position.x,
-      position.y,
-      imageRef.current.width * scale,
-      imageRef.current.height * scale
-    );
-    ctx.restore();
+      // 绘制图片
+      ctx.drawImage(
+        originalBitmap,
+        position.x,
+        position.y,
+        originalBitmap.width * scale,
+        originalBitmap.height * scale
+      );
+      ctx.restore();
+    })();
   }, [originalImage, position, scale]);
 
   // 确认裁剪 → 输出 Blob 用于上传
