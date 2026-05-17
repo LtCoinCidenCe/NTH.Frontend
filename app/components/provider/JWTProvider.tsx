@@ -41,7 +41,7 @@ const JWTProvider: React.FC<{ loaderJWT: string, children: React.ReactNode }> = 
         const fetched = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/Login`,
           {
             method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userLoginDTO)
+            body: JSON.stringify(userLoginDTO), credentials: "include"
           });
         const token = await fetched.text();
         if (fetched.status >= 500) {

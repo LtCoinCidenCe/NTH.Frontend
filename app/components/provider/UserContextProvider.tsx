@@ -8,7 +8,6 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const errorContext = useContext(ErrorContext);
   const { jwt, userIdentifier } = useContext(JWTContext);
   const [users, setUsers] = useState<UserBasic[]>([]);
-  const [currentUser, setCurrentUser] = useState<UserBasic>(User0);
   useEffect(() => {
     const fetchData = async () => {
       const URLPath = "/api/User";
@@ -36,7 +35,6 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return;
         }
         setUsers(fruit);
-        setCurrentUser(current);
       } catch (error) {
         console.log("network error");
         errorContext(`${error}`);
@@ -46,7 +44,12 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return;
   }, []); // useEffect
 
-  return <UserContext value={{ users, currentUser, setUsers }}>{users.length > 0 ? children : undefined}</UserContext>;
+  const currentUser = users.find(x => x.id === Number.parseInt(userIdentifier.substring(2))) ?? User0;
+  const updateCurrentUser = (newUser: UserBasic) => {
+    setUsers(prev => prev.map(x => x.id === newUser.id ? newUser : x));
+  }
+
+  return <UserContext value={{ users, currentUser, setUsers, updateCurrentUser }}>{users.length > 0 ? children : undefined}</UserContext>;
 };
 
 export default UserContextProvider;
