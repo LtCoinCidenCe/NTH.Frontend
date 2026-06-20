@@ -55,6 +55,15 @@ export const isUserBasic = (candidate: any): candidate is UserBasic =>
 export const User0: UserBasic = { id: 0, username: "", displayname: "", userIconID: "00000000-0000-0000-0000-000000000000", titleWords: "", userRole: 0, creationDate: new Date() };
 
 
+export const AuthorContactItemZod = zod.object({
+    id: zod.number(),
+    userID: zod.number(),
+    byUserAudit: zod.number(),
+    changeDate: zod.coerce.date()
+});
+
+export type AuthorContactItem = zod.infer<typeof AuthorContactItemZod>;
+
 export const AuthorBasicZod = zod.object({
     id: zod.number(),
     name: zod.string(),
@@ -68,11 +77,10 @@ export const AuthorBasicZod = zod.object({
     additionalRequirements: zod.string(),
     additionalRequirementsChangeDate: zod.coerce.date(),
     creationDate: zod.coerce.date(),
-    contactUserID: zod.number(),
-})
+    contact: zod.array(AuthorContactItemZod),
+});
 
 export type AuthorBasic = zod.infer<typeof AuthorBasicZod>;
 
 export const isAuthorBasic = (candidate: any): candidate is AuthorBasic =>
-    AuthorBasicZod.safeParse(candidate).success
-
+    AuthorBasicZod.safeParse(candidate).success;

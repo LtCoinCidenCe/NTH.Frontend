@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { isAuthorBasic, type AuthorBasic } from "~/types";
+import { AuthorBasicZod, type AuthorBasic } from "~/types";
 import ErrorContext from "./ErrorContext";
 import JWTContext from "./JWTContext";
 import AuthorContext from "./AuthorContext";
@@ -22,11 +22,12 @@ const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         errorContext(`数据读取失败，请刷新。${URLPath} is not array`);
         return;
       }
-      if (!allAuthors.every(author => isAuthorBasic(author))) {
+      try {
+        setAuthors(allAuthors.map(author => AuthorBasicZod.parse(author)));
+      } catch (error) {
         errorContext(`${URLPath} doesn't have valid items`);
         return;
       }
-      setAuthors(allAuthors);
     }
     fetchData();
     return;
