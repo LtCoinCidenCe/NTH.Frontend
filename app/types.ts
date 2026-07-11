@@ -84,3 +84,17 @@ export type AuthorBasic = zod.infer<typeof AuthorBasicZod>;
 
 export const isAuthorBasic = (candidate: any): candidate is AuthorBasic =>
     AuthorBasicZod.safeParse(candidate).success;
+
+export const LiaoTianMessageZod = zod.object({
+    id: zod.number(),
+    userID: zod.number(),
+    receivedTime: zod.coerce.date(),
+    words: zod.string(),
+    revoked: zod.boolean(),
+});
+
+export type LiaoTianMessage = zod.infer<typeof LiaoTianMessageZod>;
+
+export const LiaoTianJiLuZod = zod.array(LiaoTianMessageZod);
+
+export type LiaoTianJiLu = zod.infer<typeof LiaoTianJiLuZod>;

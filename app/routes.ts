@@ -15,6 +15,7 @@ export default [
             route("video", "routes/videoRoute.tsx"),
             route("export","routes/exportRoute.tsx"),
             route("personal","routes/personalRoute.tsx"),
+            route("liaoTian","routes/liaoTianRoute.tsx"),
         ]),
     ])
 ] satisfies RouteConfig;
