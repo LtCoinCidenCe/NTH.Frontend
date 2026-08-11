@@ -1,11 +1,14 @@
 import { useContext, useEffect, useRef, useState, type FC } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import futagotoYukari from "../user/futagotoYukari.png";
 import ErrorContext from "../provider/ErrorContext";
+import UserContext from "../provider/UserContext";
 import JWTContext from "../provider/JWTContext";
 import { LiaoTianJiLuZod, type LiaoTianMessage } from "~/types";
 
 const LiaoTian: FC = () => {
   const errorContext = useContext(ErrorContext);
+  const userContext = useContext(UserContext);
   const { jwt } = useContext(JWTContext);
   const [msgList, setMsgList] = useState<LiaoTianMessage[]>([]);
   const liaoTianShiRef = useRef<HubConnection>(null);
@@ -82,7 +85,22 @@ const LiaoTian: FC = () => {
   console.debug(msgList);
 
   return <div className="flex flex-col min-w-xl mx-64 p-4">
-    <form className="absolute bottom-20"
+    <div className="flex flex-col-reverse h-[75vh] overflow-y-auto">
+      {msgList.toReversed().map(x =>
+        <div key={x.id} className="flex flex-row items-center my-2">
+          <img className="w-16 h-16 rounded-full object-cover"
+            src={userContext.usersMap.get(x.userID)?.userIconID === "00000000-0000-0000-0000-000000000000" ? futagotoYukari : `${import.meta.env.VITE_BACKEND_URL}/api/User/Icon/${userContext.usersMap.get(x.userID)?.userIconID}`}
+            onError={(e) => { e.currentTarget.src = futagotoYukari }}
+          />
+          <div className="flex flex-col">
+            <div className="mx-1 text-gray-500">
+              {userContext.usersMap.get(x.userID)?.displayname}
+            </div>
+            <div className="mx-1 p-2 bg-cyan-200 rounded-lg">{x.words}</div>
+          </div>
+        </div>)}
+    </div>
+    <form className="m-6"
       onSubmit={async (e) => {
         e.preventDefault();
         if (arrowText === "") {

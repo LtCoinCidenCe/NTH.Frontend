@@ -45,11 +45,12 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []); // useEffect
 
   const currentUser = users.find(x => x.id === Number.parseInt(userIdentifier.substring(2))) ?? User0;
+  const usersMap = new Map(users.map(x => [x.id, x]));
   const updateCurrentUser = (newUser: UserBasic) => {
     setUsers(prev => prev.map(x => x.id === newUser.id ? newUser : x));
   }
 
-  return <UserContext value={{ users, currentUser, setUsers, updateCurrentUser }}>{users.length > 0 ? children : undefined}</UserContext>;
+  return <UserContext value={{ users, usersMap, currentUser, setUsers, updateCurrentUser }}>{users.length > 0 ? children : undefined}</UserContext>;
 };
 
 export default UserContextProvider;
