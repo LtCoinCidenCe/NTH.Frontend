@@ -21,7 +21,7 @@ A modern, production-ready template for building full-stack React applications u
 Install the dependencies:
 
 ```bash
-yarn install
+npm install
 ```
 
 ### Development
@@ -29,7 +29,7 @@ yarn install
 Start the development server with HMR:
 
 ```bash
-yarn run dev
+npm run dev
 ```
 
 Your application will be available at `http://localhost:5173`.
@@ -39,7 +39,7 @@ Your application will be available at `http://localhost:5173`.
 Create a production build:
 
 ```bash
-yarn run build
+npm run build
 ```
 
 ## Deployment
@@ -78,7 +78,7 @@ Make sure to deploy the output of `npm run build`
 ├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
 ├── build/
 │   ├── client/    # Static assets
-│   └── server/    # Server-side code (do not use SSR)
+│   └── server/    # Server-side code
 ```
 
 ## Styling
